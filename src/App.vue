@@ -1,52 +1,17 @@
 <template>
   <div id="app">
     <Header />
-    <AddTodo @add-todo="addTodo" />
-    <Todos :todos="todos" @del-todo="delTodo" />
+    <router-view />
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import Header from "./components/layout/Header";
-import AddTodo from "./components/AddTodo";
-import Todos from "./components/Todos";
+import Header from "@/components/layout/Header";
 
 export default {
   name: "App",
   components: {
     Header,
-    AddTodo,
-    Todos,
-  },
-  data() {
-    return {
-      todos: [],
-    };
-  },
-  methods: {
-    delTodo(id) {
-      axios
-        .delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-        .then(() => (this.todos = this.todos.filter((todo) => todo.id != id)))
-        .catch((err) => console.log(err));
-    },
-    addTodo(newTodo) {
-      const { title, completed } = newTodo;
-      axios
-        .post("https://jsonplaceholder.typicode.com/todos", {
-          title,
-          completed,
-        })
-        .then((res) => (this.todos = [...this.todos, res.data]))
-        .catch((err) => console.log(err));
-    },
-  },
-  created() {
-    axios
-      .get("https://jsonplaceholder.typicode.com/todos?_limit=5")
-      .then((res) => (this.todos = res.data))
-      .catch((err) => console.log(err));
   },
 };
 </script>
@@ -58,6 +23,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
